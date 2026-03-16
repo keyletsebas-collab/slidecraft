@@ -15,12 +15,16 @@ SlideCraft es una aplicación web intuitiva y potente para crear presentaciones 
 
 ## Instalación y Uso
 
-1. Descarga este repositorio como un archivo ZIP o clones el repositorio:
+1. Descarga este repositorio como un archivo ZIP o clona el repositorio:
    ```bash
-   git clone <url-del-repositorio>
+   git clone https://github.com/keyletsebas-collab/slidecraft.git
    ```
-2. Abre el archivo `index.html` en cualquier navegador moderno.
-3. ¡Empieza a crear! No requiere conexión a internet ni servidores externos.
+2. **Ejecutar Localmente (Localhost)**:
+   Aunque puedes abrir `index.html` directamente, se recomienda usar un servidor local para una mejor experiencia:
+   - **Si tienes VS Code**: Instala la extensión "Live Server" y haz clic en "Go Live".
+   - **Si tienes Node.js**: Ejecuta `npx serve .` en la carpeta del proyecto.
+   - **Si tienes Python**: Ejecuta `python -m http.server` en la carpeta del proyecto.
+3. Abre tu navegador en la dirección que te indique el servidor (ej: `http://localhost:5000` o `http://localhost:8000`).
 
 ## Tecnologías Utilizadas
 
