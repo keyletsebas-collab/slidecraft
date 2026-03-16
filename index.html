@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SlideCraft – Presentaciones Inteligentes</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+<!-- ===== SPLASH / HOME ===== -->
+<div id="home-screen">
+  <div class="home-bg"></div>
+  <div class="home-content">
+    <div class="home-logo"><i class="fa-solid fa-layer-group"></i> SlideCraft</div>
+    <h1 class="home-title">Crea presentaciones <span class="gradient-text">increíbles</span></h1>
+    <p class="home-sub">Tu alternativa gratuita a PowerPoint, con IA integrada y exportación profesional.</p>
+    <div class="home-cards">
+      <div class="home-card" id="btn-new-blank">
+        <i class="fa-solid fa-file-circle-plus"></i>
+        <h3>Presentación en blanco</h3>
+        <p>Empieza desde cero con el editor visual</p>
+      </div>
+      <div class="home-card code-card" id="btn-code-create">
+        <i class="fa-solid fa-code"></i>
+        <h3>Crear con código</h3>
+        <p>Usa SlideScript para definir slides fácilmente</p>
+      </div>
+      <div class="home-card tpl-card" id="btn-templates-home">
+        <i class="fa-solid fa-swatchbook"></i>
+        <h3>Plantillas</h3>
+        <p>Diseños pre-creados listos para usar</p>
+      </div>
+    </div>
+
+    <!-- RECENT PRESENTATIONS -->
+    <div class="home-history-section" id="home-history-section">
+      <div class="home-history-header">
+        <span><i class="fa-solid fa-clock-rotate-left"></i> Presentaciones recientes</span>
+        <button class="hist-manage-btn" id="btn-history-manage"><i class="fa-solid fa-folder-open"></i> Ver todo</button>
+      </div>
+      <div class="home-history-grid" id="home-history-grid">
+        <div class="hist-empty-msg">No hay presentaciones guardadas aún.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== MAIN EDITOR ===== -->
+<div id="editor-screen" class="hidden">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="btn-icon" id="btn-home" title="Inicio"><i class="fa-solid fa-house"></i></button>
+      <span class="app-name">SlideCraft</span>
+      <input type="text" id="pres-title" value="Mi Presentación" class="pres-title-input"/>
+    </div>
+    <div class="topbar-center">
+      <button class="tb-btn" id="tb-undo" title="Deshacer"><i class="fa-solid fa-rotate-left"></i></button>
+      <button class="tb-btn" id="tb-redo" title="Rehacer"><i class="fa-solid fa-rotate-right"></i></button>
+      <div class="tb-sep"></div>
+      <button class="tb-btn" id="tb-text" title="Añadir texto"><i class="fa-solid fa-font"></i> Texto</button>
+      <button class="tb-btn" id="tb-image" title="Añadir imagen"><i class="fa-solid fa-image"></i> Imagen</button>
+      <button class="tb-btn" id="tb-shape" title="Añadir forma"><i class="fa-solid fa-shapes"></i> Forma</button>
+      <button class="tb-btn" id="tb-table" title="Añadir tabla"><i class="fa-solid fa-table"></i> Tabla</button>
+      <button class="tb-btn" id="tb-counter" title="Añadir contador"><i class="fa-solid fa-plus-minus"></i> Contador</button>
+      <button class="tb-btn" id="tb-video" title="Añadir video"><i class="fa-solid fa-film"></i> Video</button>
+      <button class="tb-btn" id="tb-icon" title="Añadir icono/emoji"><i class="fa-solid fa-icons"></i> Icono</button>
+      <div class="tb-sep"></div>
+      <button class="tb-btn code-btn" id="tb-code" title="Crear con código"><i class="fa-solid fa-code"></i> Código</button>
+      <button class="tb-btn tpl-btn" id="tb-templates" title="Plantillas"><i class="fa-solid fa-swatchbook"></i> Plantillas</button>
+    </div>
+    <div class="topbar-right">
+      <button class="tb-btn" id="tb-present" title="Proyectar"><i class="fa-solid fa-tv"></i> Proyectar</button>
+      <div class="dropdown">
+        <button class="tb-btn primary-btn" id="tb-export"><i class="fa-solid fa-download"></i> Exportar <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="dropdown-menu" id="export-menu">
+          <div class="dm-item" id="exp-pptx"><i class="fa-solid fa-file-powerpoint"></i> PowerPoint (.pptx)</div>
+          <div class="dm-item" id="exp-pdf"><i class="fa-solid fa-file-pdf"></i> PDF</div>
+          <div class="dm-item" id="exp-png"><i class="fa-solid fa-image"></i> Imágenes PNG</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- EDITOR BODY -->
+  <div class="editor-body">
+
+    <!-- LEFT: SLIDE PANEL -->
+    <aside class="slide-panel">
+      <div class="slide-panel-header">
+        <span>Diapositivas</span>
+        <button class="btn-add-slide" id="btn-add-slide"><i class="fa-solid fa-plus"></i></button>
+      </div>
+      <div id="slide-list"></div>
+    </aside>
+
+    <!-- CENTER: CANVAS -->
+    <main class="canvas-area">
+      <div class="canvas-controls">
+        <button class="btn-icon sm" id="zoom-out"><i class="fa-solid fa-minus"></i></button>
+        <span id="zoom-label">100%</span>
+        <button class="btn-icon sm" id="zoom-in"><i class="fa-solid fa-plus"></i></button>
+        <button class="btn-icon sm" id="zoom-fit" title="Ajustar"><i class="fa-solid fa-expand"></i></button>
+      </div>
+      <div class="canvas-wrapper" id="canvas-wrapper">
+        <div id="slide-canvas" class="slide-canvas">
+          <!-- Elements rendered here dynamically -->
+        </div>
+      </div>
+    </main>
+
+    <!-- RIGHT: PROPERTIES PANEL -->
+    <aside class="props-panel" id="props-panel">
+      <div class="props-tab active" data-tab="slide">Diapositiva</div>
+      <div class="props-tab" data-tab="element">Elemento</div>
+      <div id="slide-props">
+        <div class="prop-group">
+          <label>Fondo</label>
+          <div class="bg-options">
+            <input type="color" id="bg-color" value="#1e1e2e" title="Color sólido"/>
+            <button class="btn-bg gradient" id="bg-gradient" title="Gradiente"><i class="fa-solid fa-circle-half-stroke"></i></button>
+            <button class="btn-bg" id="bg-image-btn" title="Imagen"><i class="fa-solid fa-image"></i></button>
+            <input type="file" id="bg-image-file" accept="image/*" class="hidden"/>
+          </div>
+          <div id="gradient-picker" class="hidden">
+            <input type="color" id="grad-from" value="#6366f1"/>
+            <span>→</span>
+            <input type="color" id="grad-to" value="#8b5cf6"/>
+            <select id="grad-dir">
+              <option value="to right">Horizontal</option>
+              <option value="to bottom">Vertical</option>
+              <option value="135deg">Diagonal</option>
+            </select>
+          </div>
+        </div>
+        <div class="prop-group">
+          <label>Transición</label>
+          <select id="slide-transition">
+            <option value="none">Sin transición</option>
+            <option value="fade">Desvanecimiento</option>
+            <option value="slide">Deslizar</option>
+            <option value="zoom">Zoom</option>
+            <option value="flip">Voltear</option>
+          </select>
+        </div>
+        <div class="prop-group">
+          <label>Notas del orador</label>
+          <textarea id="speaker-notes" rows="4" placeholder="Escribe tus notas aquí..."></textarea>
+        </div>
+        <div class="prop-group">
+          <button class="danger-btn w100" id="btn-delete-slide"><i class="fa-solid fa-trash"></i> Eliminar diapositiva</button>
+        </div>
+      </div>
+      <div id="element-props" class="hidden">
+        <div class="prop-group">
+          <label>Posición &amp; Tamaño</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div><span class="prop-micro-label">X</span><input type="number" id="el-x" class="prop-input"/></div>
+            <div><span class="prop-micro-label">Y</span><input type="number" id="el-y" class="prop-input"/></div>
+            <div><span class="prop-micro-label">W</span><input type="number" id="el-w" class="prop-input"/></div>
+            <div><span class="prop-micro-label">H</span><input type="number" id="el-h" class="prop-input"/></div>
+          </div>
+        </div>
+
+        <!-- ALIGN TOOLS -->
+        <div class="prop-group">
+          <label>Alinear en slide</label>
+          <div class="align-grid">
+            <button class="align-btn" data-align-h="left"   title="Izquierda"><i class="fa-solid fa-align-left"></i></button>
+            <button class="align-btn" data-align-h="center" title="Centro H"><i class="fa-solid fa-align-center"></i></button>
+            <button class="align-btn" data-align-h="right"  title="Derecha"><i class="fa-solid fa-align-right"></i></button>
+            <button class="align-btn" data-align-v="top"    title="Arriba"><i class="fa-solid fa-arrow-up"></i></button>
+            <button class="align-btn" data-align-v="middle" title="Centro V"><i class="fa-solid fa-arrows-up-down"></i></button>
+            <button class="align-btn" data-align-v="bottom" title="Abajo"><i class="fa-solid fa-arrow-down"></i></button>
+          </div>
+        </div>
+
+        <!-- LAYER ORDER -->
+        <div class="prop-group">
+          <label>Capa</label>
+          <div class="layer-btns">
+            <button class="layer-btn" id="el-bring-front" title="Al frente"><i class="fa-solid fa-layer-group"></i> Frente</button>
+            <button class="layer-btn" id="el-send-back"   title="Atrás"><i class="fa-regular fa-layer-group"></i> Atrás</button>
+          </div>
+        </div>
+
+        <!-- ELEMENT ACTIONS -->
+        <div class="prop-group">
+          <label>Acciones</label>
+          <div class="elem-action-row">
+            <button class="action-btn" id="el-duplicate" title="Duplicar"><i class="fa-solid fa-copy"></i> Duplicar</button>
+            <button class="action-btn" id="el-lock" title="Bloquear/desbloquear"><i class="fa-solid fa-lock"></i> Bloquear</button>
+          </div>
+        </div>
+
+        <div class="prop-group" id="text-props">
+          <label>Fuente</label>
+          <select id="el-font">
+            <option>Inter</option><option>Arial</option><option>Georgia</option>
+            <option>Courier New</option><option>Trebuchet MS</option>
+            <option>Verdana</option><option>Times New Roman</option>
+          </select>
+          <label>Tamaño</label><input type="number" id="el-fontsize" value="24" class="prop-input"/>
+          <label>Color</label><input type="color" id="el-color" value="#ffffff"/>
+          <div class="text-btns">
+            <button class="fmt-btn" data-fmt="bold"><b>B</b></button>
+            <button class="fmt-btn" data-fmt="italic"><i>I</i></button>
+            <button class="fmt-btn" data-fmt="underline"><u>U</u></button>
+          </div>
+          <label>Alineación</label>
+          <div class="text-btns">
+            <button class="fmt-btn" data-align="left"><i class="fa-solid fa-align-left"></i></button>
+            <button class="fmt-btn" data-align="center"><i class="fa-solid fa-align-center"></i></button>
+            <button class="fmt-btn" data-align="right"><i class="fa-solid fa-align-right"></i></button>
+          </div>
+        </div>
+
+        <!-- SHAPE COLOR -->
+        <div class="prop-group" id="shape-props" style="display:none">
+          <label>Color de forma</label>
+          <input type="color" id="el-shape-color" value="#6366f1"/>
+        </div>
+
+        <div class="prop-group">
+          <label>Opacidad</label>
+          <input type="range" id="el-opacity" min="0" max="100" value="100"/>
+          <label>Rotación</label>
+          <input type="range" id="el-rotation" min="-180" max="180" value="0"/>
+        </div>
+        <div class="prop-group">
+          <button class="danger-btn w100" id="btn-delete-el"><i class="fa-solid fa-trash"></i> Eliminar elemento</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+
+<!-- ===== CODE MODAL ===== -->
+<div id="code-modal" class="modal-overlay hidden">
+  <div class="modal code-modal-box">
+    <div class="modal-header">
+      <h2><i class="fa-solid fa-code"></i> Crear con código</h2>
+      <button class="close-modal" data-modal="code-modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="code-tabs">
+        <button class="code-tab active" data-mode="slidescript">SlideScript</button>
+        <button class="code-tab" data-mode="example">Ver ejemplo</button>
+      </div>
+      <div style="font-size:0.8rem;color:#64748b;padding:6px 0 4px;">
+        Formato simple: usa <code>=== SLIDE ===</code> para separar slides. Luego escribe <code>title:</code>, <code>bullet:</code>, <code>text:</code>, etc. Indenta las opciones con 2 espacios.
+      </div>
+      <textarea id="code-editor" class="code-textarea" spellcheck="false"></textarea>
+      <div id="code-error" class="code-error hidden"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" data-modal="code-modal">Cancelar</button>
+      <button class="primary-btn" id="btn-apply-code"><i class="fa-solid fa-check"></i> Aplicar slides</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GRADIENT PICKER MODAL ===== -->
+<div id="gradient-modal" class="modal-overlay hidden">
+  <div class="modal sm-modal">
+    <div class="modal-header">
+      <h2>Gradiente de fondo</h2>
+      <button class="close-modal" data-modal="gradient-modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <label>Color inicial</label><input type="color" id="gm-from" value="#6366f1"/>
+      <label>Color final</label><input type="color" id="gm-to" value="#8b5cf6"/>
+      <label>Dirección</label>
+      <select id="gm-dir">
+        <option value="to right">Horizontal →</option>
+        <option value="to bottom">Vertical ↓</option>
+        <option value="135deg">Diagonal ↘</option>
+        <option value="to bottom right">Esquina</option>
+      </select>
+      <div class="gradient-preview" id="gm-preview"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" data-modal="gradient-modal">Cancelar</button>
+      <button class="primary-btn" id="btn-apply-gradient">Aplicar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SHAPE PICKER ===== -->
+<div id="shape-modal" class="modal-overlay hidden">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <h2><i class="fa-solid fa-shapes"></i> Insertar forma</h2>
+      <button class="close-modal" data-modal="shape-modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="shape-grid shape-grid-lg">
+        <div class="shape-opt" data-shape="rect"><div class="sh-rect"></div><span>Rectángulo</span></div>
+        <div class="shape-opt" data-shape="roundrect"><div class="sh-roundrect"></div><span>R. Redondeado</span></div>
+        <div class="shape-opt" data-shape="circle"><div class="sh-circle"></div><span>Círculo</span></div>
+        <div class="shape-opt" data-shape="triangle"><div class="sh-triangle"></div><span>Triángulo</span></div>
+        <div class="shape-opt" data-shape="diamond"><div class="sh-diamond"></div><span>Diamante</span></div>
+        <div class="shape-opt" data-shape="pentagon"><div class="sh-pentagon">⬠</div><span>Pentágono</span></div>
+        <div class="shape-opt" data-shape="hexagon"><div class="sh-hexagon">⬡</div><span>Hexágono</span></div>
+        <div class="shape-opt" data-shape="line"><div class="sh-line"></div><span>Línea</span></div>
+        <div class="shape-opt" data-shape="arrow"><div class="sh-arrow">→</div><span>Flecha</span></div>
+        <div class="shape-opt" data-shape="dbarrow"><div class="sh-arrow">↔</div><span>Doble flecha</span></div>
+        <div class="shape-opt" data-shape="star"><div class="sh-star">★</div><span>Estrella</span></div>
+        <div class="shape-opt" data-shape="bubble"><div class="sh-bubble">💬</div><span>Bocadillo</span></div>
+      </div>
+      <div class="prop-group" style="margin-top:16px">
+        <label>Color</label><input type="color" id="shape-color" value="#6366f1"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VIDEO MODAL ===== -->
+<div id="video-modal" class="modal-overlay hidden">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <h2><i class="fa-solid fa-film"></i> Insertar video</h2>
+      <button class="close-modal" data-modal="video-modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="video-tabs">
+        <button class="video-tab active" data-vtab="youtube"><i class="fa-brands fa-youtube"></i> YouTube</button>
+        <button class="video-tab" data-vtab="local"><i class="fa-solid fa-folder-open"></i> Archivo local</button>
+      </div>
+      <div id="vtab-youtube">
+        <div class="prop-group" style="margin-top:12px">
+          <label>URL de YouTube</label>
+          <input type="text" id="yt-url" class="prop-input" placeholder="https://www.youtube.com/watch?v=..."/>
+          <div id="yt-preview-wrap" style="margin-top:10px;display:none">
+            <iframe id="yt-preview" width="100%" height="200" style="border:none;border-radius:8px;" allowfullscreen></iframe>
+          </div>
+          <small style="color:var(--text-muted);font-size:0.75rem">El video se mostrará como reproductor embebido en el slide.</small>
+        </div>
+      </div>
+      <div id="vtab-local" style="display:none">
+        <div class="prop-group" style="margin-top:12px">
+          <label>Archivo de video</label>
+          <input type="file" id="video-upload-file" accept="video/mp4,video/webm,video/ogg" class="prop-input" style="padding:6px"/>
+          <small style="color:var(--text-muted);font-size:0.75rem">Formatos: MP4, WebM, OGG. (se carga en memoria)</small>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" data-modal="video-modal">Cancelar</button>
+      <button class="primary-btn" id="btn-insert-video"><i class="fa-solid fa-plus"></i> Insertar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ICON / EMOJI PICKER ===== -->
+<div id="icon-modal" class="modal-overlay hidden">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <h2><i class="fa-solid fa-icons"></i> Insertar icono o emoji</h2>
+      <button class="close-modal" data-modal="icon-modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <input type="text" id="icon-search" class="prop-input" placeholder="Buscar emoji..." style="margin-bottom:12px"/>
+      <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <button class="code-tab active" data-icat="smileys">😀 Caras</button>
+        <button class="code-tab" data-icat="animals">🐶 Animales</button>
+        <button class="code-tab" data-icat="objects">🎯 Objetos</button>
+        <button class="code-tab" data-icat="symbols">💎 Símbolos</button>
+        <button class="code-tab" data-icat="flags">🏳 Banderas</button>
+        <button class="code-tab" data-icat="tech">💻 Tecnología</button>
+      </div>
+      <div id="icon-grid" class="icon-grid"></div>
+      <div class="prop-group" style="margin-top:14px;display:flex;gap:12px;align-items:center">
+        <div>
+          <label>Tamaño (px)</label>
+          <input type="number" id="icon-size" value="80" class="prop-input" style="width:80px"/>
+        </div>
+        <div style="flex:1">
+          <label>Preview</label>
+          <div id="icon-preview" style="font-size:48px;text-align:center;padding:8px;background:var(--surface2);border-radius:8px;min-height:70px">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" data-modal="icon-modal">Cancelar</button>
+      <button class="primary-btn" id="btn-insert-icon"><i class="fa-solid fa-plus"></i> Insertar</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ===== TEXT STYLE MODAL ===== -->
+<div id="text-style-modal" class="modal-overlay hidden">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header">
+      <h2><i class="fa-solid fa-font"></i> Estilos de texto</h2>
+      <button class="close-modal" data-modal="text-style-modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="text-style-grid" id="text-style-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE LAYOUT MODAL ===== -->
+<div id="layout-modal" class="modal-overlay hidden">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header">
+      <h2><i class="fa-solid fa-table-columns"></i> Diseño de diapositiva</h2>
+      <button class="close-modal" data-modal="layout-modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:4px">Elige un diseño para la nueva diapositiva</p>
+      <div class="layout-grid" id="layout-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TEMPLATES MODAL ===== -->
+<div id="templates-modal" class="modal-overlay hidden">
+  <div class="modal" style="max-width:820px">
+    <div class="modal-header">
+      <h2><i class="fa-solid fa-swatchbook"></i> Plantillas pre-creadas</h2>
+      <button class="close-modal" data-modal="templates-modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="tpl-grid" id="tpl-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROJECTION MODE ===== -->
+<div id="projection-screen" class="hidden">
+  <div id="proj-slide" class="proj-slide"></div>
+  <div class="proj-controls">
+    <button id="proj-prev"><i class="fa-solid fa-chevron-left"></i></button>
+    <span id="proj-counter">1 / 1</span>
+    <button id="proj-next"><i class="fa-solid fa-chevron-right"></i></button>
+    <button id="proj-exit" title="Salir (Esc)"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="proj-notes" id="proj-notes"></div>
+  <div id="proj-laser" class="laser hidden"></div>
+</div>
+
+<!-- Hidden file inputs -->
+<input type="file" id="img-upload" accept="image/*" class="hidden"/>
+
+<!-- ===== HISTORY MODAL ===== -->
+<div id="history-modal" class="modal-overlay hidden">
+  <div class="modal" style="max-width:900px;max-height:85vh;display:flex;flex-direction:column;">
+    <div class="modal-header">
+      <h2><i class="fa-solid fa-clock-rotate-left"></i> Historial de presentaciones</h2>
+      <button class="close-modal" data-modal="history-modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" style="overflow-y:auto;flex:1;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <span style="color:var(--text-muted);font-size:0.85rem;" id="hist-count">0 presentaciones guardadas</span>
+        <button class="danger-btn" id="btn-hist-clear-all" style="font-size:0.8rem;padding:6px 14px;">
+          <i class="fa-solid fa-trash"></i> Borrar todo el historial
+        </button>
+      </div>
+      <div class="hist-modal-grid" id="hist-modal-grid">
+        <div class="hist-empty-msg">No hay presentaciones en el historial.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<script src="app.js"></script>
+<script src="app2.js"></script>
+<script src="app3.js"></script>
+<script src="app4.js"></script>
+<script src="app5.js"></script>
+</body>
+</html>
+
